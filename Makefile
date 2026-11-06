@@ -36,7 +36,7 @@ help:
 	@echo "Targets:"
 	@echo "  check-tools    - verify required tools are on PATH"
 	@echo "  lint           - Verilator lint of all RTL (fast syntax/style gate)"
-	@echo "  sim-directed   - compile + run directed self-checking testbench"
+	@echo "  sim-directed   - run the verified Windows ModelSim regression"
 	@echo "  uvm            - compile + run UVM environment"
 	@echo "  synth-smoke    - Yosys synthesis smoke test of \$$($(TOP)) (0 errors, 0 latches)"
 	@echo "  openlane       - reminder: OpenLane runs on the separate Linux machine"
@@ -63,16 +63,7 @@ lint:
 	verilator --lint-only -Wall --top-module $(TOP) $(RTL_SRCS)
 
 sim-directed:
-	@test -f tb/tb_directed_final.sv || { echo "tb/tb_directed_final.sv does not exist."; exit 1; }
-	@test -f rtl/top/$(TOP).sv || { echo "rtl/top/$(TOP).sv does not exist yet."; exit 1; }
-	mkdir -p $(RUN_DIR)
-	@case "$(SIM)" in \
-	  vsim) vlib $(RUN_DIR)/work && vlog -sv $(RTL_SRCS) tb/tb_directed_final.sv && \
-	        vsim -c tb_directed_final $(SIM_ARGS) -do "run -all; quit" ;; \
-	  xrun) xrun -sv $(RTL_SRCS) tb/tb_directed_final.sv $(SIM_ARGS) ;; \
-	  vcs)  vcs -sverilog $(RTL_SRCS) tb/tb_directed_final.sv && ./simv $(SIM_ARGS) ;; \
-	  *)    echo "Unknown SIM=$(SIM)"; exit 1 ;; \
-	esac
+	powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir $(RUN_DIR)
 
 uvm:
 	@test -f tb/uvm/tb_uvm.sv || { echo "tb/uvm/tb_uvm.sv does not exist yet."; exit 1; }

@@ -101,7 +101,8 @@ module rv32i_core #(
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       pc_current <= RESET_PC;
-    end else begin
+    end else if ((core_state == RUN && (!dmem_req_cu || dmem_ack)) ||
+                 (core_state == STALL_MEM && dmem_ack)) begin
       pc_current <= pc_next;
     end
   end
@@ -345,7 +346,9 @@ module rv32i_core #(
   assign dmem_wmask = dmem_wmask_processed;
 
   // Register write enable (only when not stalled)
-  assign rd_we = rf_we_cu && (core_state == RUN) && (dmem_ack || !dmem_req_cu);
+  assign rd_we = rf_we_cu && !dmem_err &&
+                 ((core_state == RUN && !dmem_req_cu) ||
+                  (core_state == STALL_MEM && dmem_ack));
 
   // ==================== Debug / Visibility (optional synthesis warnings ignored) ====================
   // These would be useful for simulation/debugging but removed for synthesis

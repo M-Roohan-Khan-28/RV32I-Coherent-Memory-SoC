@@ -7,8 +7,9 @@ New-Item -ItemType Directory -Force -Path $destination | Out-Null
 $result = [ordered]@{
   status = 'NOT RUN'; source_revision = (& git -C $repo rev-parse HEAD).Trim()
   command = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir <fresh-directory>'
-  simulator = ''; compile_exit = $null; simulation_exit = $null
+  simulator = ''; compile_exit = $null; simulation_exit = $null; program_simulation_exit = $null
   cases = 0; checks = 0; accepted = 0; completed = 0; aborted = 0
+  program_checks = 0; program_accepted = 0; program_completed = 0; program_waits = 0
   output_dir = $destination; reason = ''
 }
 function Invoke-Logged([string]$Executable, [string]$Arguments, [string]$Log) {
@@ -39,7 +40,12 @@ try {
   if ($vlibCode -ne 0) { throw "vlib exit $vlibCode" }
   $rtl = Join-Path $repo 'rtl\coherent\coherent_word_memory.sv'
   $tb = Join-Path $repo 'tb\tb_coherent_word_memory.sv'
-  $result.compile_exit = Invoke-Logged (Join-Path $simDir 'vlog.exe') "-sv `"$rtl`" `"$tb`"" (Join-Path $destination 'compile.log')
+  $sources = @(
+    (Join-Path $repo 'rtl\core\alu.sv'), (Join-Path $repo 'rtl\core\reg_file.sv'),
+    (Join-Path $repo 'rtl\core\control_unit.sv'), (Join-Path $repo 'rtl\core\rv32i_core.sv'),
+    $rtl, $tb, (Join-Path $repo 'tb\tb_two_core_programs.sv'))
+  $sourceArgs = ($sources | ForEach-Object { '"' + $_ + '"' }) -join ' '
+  $result.compile_exit = Invoke-Logged (Join-Path $simDir 'vlog.exe') "-sv $sourceArgs" (Join-Path $destination 'compile.log')
   $compile = Get-Content (Join-Path $destination 'compile.log') -Raw
   $result.simulator = (($compile -split "`r?`n")[0]).Trim()
   if ($result.compile_exit -ne 0 -or $compile -notmatch 'Errors: 0, Warnings: 0') { throw "Compilation failed: exit $($result.compile_exit)" }
@@ -50,9 +56,21 @@ try {
   $result.cases = [int]$Matches[1]; $result.checks = [int]$Matches[2]
   $result.accepted = [int]$Matches[3]; $result.completed = [int]$Matches[4]; $result.aborted = [int]$Matches[5]
   if ($result.cases -lt 63 -or $result.checks -lt 100 -or $result.aborted -ne 1) { throw 'Required test count missing' }
+  $programExit = Invoke-Logged (Join-Path $simDir 'vsim.exe') '-c -onfinish exit tb_two_core_programs -do "run -all; quit -f"' (Join-Path $destination 'program.log')
+  $result.program_simulation_exit = $programExit
+  $program = Get-Content (Join-Path $destination 'program.log') -Raw
+  if ($programExit -ne 0 -or $program -match '(?i)\*\* Fatal|\*\* Error' -or
+      $program -notmatch 'Errors: 0, Warnings: 0') { throw "Two-core program simulation failed: exit $programExit" }
+  if ($program -notmatch 'PASS TWO_CORE_PROGRAMS checks=(\d+) accepted=(\d+) completed=(\d+) waits=(\d+)') { throw 'Two-core program result marker missing' }
+  $result.program_checks = [int]$Matches[1]; $result.program_accepted = [int]$Matches[2]
+  $result.program_completed = [int]$Matches[3]; $result.program_waits = [int]$Matches[4]
+  if ($result.program_checks -lt 128 -or $result.program_accepted -ne 6 -or
+      $result.program_completed -ne 6 -or $result.program_waits -lt 6) {
+      throw 'Two-core program check count missing'
+  }
   $result.status = 'PASS'
   $result | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $destination 'results.json')
-  Write-Host "PASS COHERENT cases=$($result.cases) checks=$($result.checks) completed=$($result.completed) source=$($result.source_revision)"
+  Write-Host "PASS COHERENT cases=$($result.cases) checks=$($result.checks) completed=$($result.completed) program_checks=$($result.program_checks) source=$($result.source_revision)"
   exit 0
 } catch {
   $result.status = 'FAIL'; $result.reason = $_.Exception.Message
