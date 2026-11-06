@@ -23,7 +23,7 @@ $env:MODELSIM_BIN = 'C:\intelFPGA\20.1\modelsim_ase\win32aloem'
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir build/coherent-fresh-1
 ```
 
-Choose a new output directory for each run. The script writes `compile.log`, `simulation.log`, `program.log` and `results.json`, and returns nonzero for a compile error, fatal test, missing result marker, timeout or missing simulator. The subsystem test uses a separate reference memory and checks accepted requests, responses, cached data and ownership. The published first milestone `c228a38` passed 63 scenarios and 1,254 checks; the processor program is a later milestone. See [verification status](docs/VERIFICATION_STATUS.md) for raw evidence and gaps.
+Choose a new output directory for each run. The script writes `compile.log`, `simulation.log`, `program.log` and `results.json`, and returns nonzero for a compile error, fatal test, missing result marker, timeout or missing simulator. The subsystem test uses a separate reference memory and checks accepted requests, responses, cached data and ownership. The published `2ca9a5e` clean-clone milestone passed 63 subsystem scenarios and a 128-check two-core program run. See [verification status](docs/VERIFICATION_STATUS.md) for raw evidence and gaps.
 
 ## Source and limitations
 
