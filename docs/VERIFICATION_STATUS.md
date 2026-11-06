@@ -1,5 +1,13 @@
 # Verification status
 
+## Current published milestone — 7 November 2026
+
+Merged [PR #4](https://github.com/M-Roohan-Khan-28/RV32I-Coherent-Memory-SoC/pull/4) source `8aaf074b8917480cefe06ee8a15b630116813034` was cloned fresh from the public repository and run with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir build/seeded-contention-clean-clone-2026-11-06`. The output path was chosen on 6 November; the actual simulation completed on 7 November. ModelSim Intel FPGA Starter Edition `vlog 2020.1 Compiler 2020.02 Feb 28 2020` compiled with 0 errors and 0 warnings. Both simulations and the wrapper exited **0**.
+
+The subsystem reported **71 scenarios, 1,477 checks, 82 accepted, 81 completed, one reset-aborted request, and 26 observed contention wait edges** with seed `0x28A6BEEF`. The two actual RV32I-core programs reported **128 checks, six accepted/completed operations and 24 PC wait edges**. [Raw compile, subsystem, program and result JSON](../reports/seeded-contention-2026-11-07/) are retained. This evidence commit only documents that tested source; it does not change RTL or tests.
+
+In a disposable uncommitted clone of source commit `f5d8605e00eb3da3d1024badbbfacdce5236b942`, the simultaneous-pair test drove `mem_ready=1` instead of holding it low. The test raised `Fatal: insufficient checks or backpressure contention`; ModelSim process exit was 0, but the wrapper returned **1** and recorded `FAIL`. [Fault transcript and JSON](../reports/seeded-contention-2026-11-07/) are retained. The published source contains no fault.
+
 ## New bounded subsystem
 
 Required command: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir <fresh-directory>` with `MODELSIM_BIN` pointing to ModelSim Intel FPGA Starter Edition 2020.1. The wrapper requires actual pass markers and zero simulator errors from **both** the subsystem bench and two-core program bench. The current runner requires at least 71 subsystem scenarios, 1,400 subsystem checks, 128 program checks, an observed contention stall, and the expected reset-aborted transaction. It checks process exit codes and times out each tool after 120 seconds. The benches have cycle and per-transaction bounds. ModelSim itself can return process exit 0 after `$fatal`, so transcript errors and markers are required too.
