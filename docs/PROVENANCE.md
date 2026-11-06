@@ -1,0 +1,7 @@
+# Source provenance and attribution
+
+This repository is an additive continuation of [`sha1kh-talib/RISC-V-SoC-with-Coherent-Memory-Subsystem`](https://github.com/sha1kh-talib/RISC-V-SoC-with-Coherent-Memory-Subsystem), pinned at commit `fe127cc508dda01851fd4c705f04aeaf62c4ecca`. Its full Git ancestry, original author records, Apache-2.0 `LICENSE`, source, testbench, UVM files, physical-design reports and historical logs are retained. The upstream commit is an ancestor of this project's main branch. No original historical result is counted as a new test run.
+
+M. Roohan Khan confirmed that he and Talib developed the reference projects together and that Talib permitted reuse and enhancement. New commits identify new work separately. Existing author notices, including upstream contributors other than Talib, remain in the original files. This permission does not extend to unrelated repositories.
+
+The new `rtl/coherent/coherent_word_memory.sv`, `tb/tb_coherent_word_memory.sv`, portable runner and documentation are additive. The only inherited RTL change at this milestone moves the `shared_sram.sv` `write_enable` declaration before its first use so the available ModelSim version accepts it. The Makefile's directed path is corrected and its unsupported present-tense status output is replaced with a pointer to measured evidence. The original directed testbench and UVM source are unchanged.

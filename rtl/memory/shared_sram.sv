@@ -51,6 +51,7 @@ module shared_sram (
   logic [10:0] waddr_word;     // Word address (11-bit from addr[11:2] + extra)
   logic [10:0] raddr_word;     // Word address
   logic [31:0] rdata_internal;
+  logic write_enable;
   
   // Extract word address (byte address [11:2] → word index [9:0])
   assign waddr_word = awaddr[11:2];
@@ -73,7 +74,6 @@ module shared_sram (
 
   // ==================== AXI Write Path ====================
   // Write happens when both AW and W channels are valid
-  logic write_enable;
   logic aw_ready_d;
   logic w_ready_d;
   logic write_occurred;
