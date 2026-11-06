@@ -7,9 +7,10 @@ New-Item -ItemType Directory -Force -Path $destination | Out-Null
 $result = [ordered]@{
   status = 'NOT RUN'; source_revision = (& git -C $repo rev-parse HEAD).Trim()
   command = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir <fresh-directory>'
-  simulator = ''; compile_exit = $null; simulation_exit = $null; program_simulation_exit = $null
+  simulator = ''; compile_exit = $null; simulation_exit = $null; program_simulation_exit = $null; concurrent_simulation_exit = $null
   cases = 0; checks = 0; accepted = 0; completed = 0; aborted = 0; contention_waits = 0
   program_checks = 0; program_accepted = 0; program_completed = 0; program_waits = 0
+  concurrent_checks = 0; concurrent_simultaneous = 0; concurrent_busy_waits = 0
   output_dir = $destination; reason = ''
 }
 function Invoke-Logged([string]$Executable, [string]$Arguments, [string]$Log) {
@@ -43,7 +44,9 @@ try {
   $sources = @(
     (Join-Path $repo 'rtl\core\alu.sv'), (Join-Path $repo 'rtl\core\reg_file.sv'),
     (Join-Path $repo 'rtl\core\control_unit.sv'), (Join-Path $repo 'rtl\core\rv32i_core.sv'),
-    $rtl, $tb, (Join-Path $repo 'tb\tb_two_core_programs.sv'))
+    $rtl, (Join-Path $repo 'rtl\coherent\core_request_bridge.sv'),
+    $tb, (Join-Path $repo 'tb\tb_two_core_programs.sv'),
+    (Join-Path $repo 'tb\tb_two_core_concurrent.sv'))
   $sourceArgs = ($sources | ForEach-Object { '"' + $_ + '"' }) -join ' '
   $result.compile_exit = Invoke-Logged (Join-Path $simDir 'vlog.exe') "-sv $sourceArgs" (Join-Path $destination 'compile.log')
   $compile = Get-Content (Join-Path $destination 'compile.log') -Raw
@@ -70,6 +73,19 @@ try {
       $result.program_completed -ne 6 -or $result.program_waits -lt 6) {
       throw 'Two-core program check count missing'
   }
+  $concurrentExit = Invoke-Logged (Join-Path $simDir 'vsim.exe') '-c -onfinish exit tb_two_core_concurrent -do "run -all; quit -f"' (Join-Path $destination 'concurrent.log')
+  $result.concurrent_simulation_exit = $concurrentExit
+  $concurrent = Get-Content (Join-Path $destination 'concurrent.log') -Raw
+  if ($concurrentExit -ne 0 -or $concurrent -match '(?i)\*\* Fatal|\*\* Error' -or
+      $concurrent -notmatch 'Errors: 0, Warnings: 0') { throw "Concurrent two-core simulation failed: exit $concurrentExit" }
+  if ($concurrent -notmatch 'PASS TWO_CORE_CONCURRENT checks=(\d+) accepted=2/2 completed=2/2 simultaneous=(\d+) busy_waits=(\d+)') {
+    throw 'Concurrent two-core result marker missing'
+  }
+  $result.concurrent_checks = [int]$Matches[1]
+  $result.concurrent_simultaneous = [int]$Matches[2]
+  $result.concurrent_busy_waits = [int]$Matches[3]
+  if ($result.concurrent_checks -lt 100 -or $result.concurrent_simultaneous -lt 1 -or
+      $result.concurrent_busy_waits -lt 2) { throw 'Concurrent two-core scenarios missing' }
   $result.status = 'PASS'
   $result | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $destination 'results.json')
   Write-Host "PASS COHERENT cases=$($result.cases) checks=$($result.checks) completed=$($result.completed) program_checks=$($result.program_checks) source=$($result.source_revision)"

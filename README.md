@@ -10,7 +10,7 @@ This repository preserves the [Talib reference project](https://github.com/sha1k
 - A write waits for an acknowledged invalidation of the other cache's matching line. Read sharing downgrades an exclusive line to shared. Cache lines evict cleanly.
 - The single `0x1000_0000` doorbell word bypasses both caches. Other out-of-range or unaligned addresses return an error. Reset cancels an in-flight request, clears cache state and doorbell, and preserves RAM.
 - `mem_ready`, invalidation acknowledgement and response ready can stall independently. The behavioral RAM initializes to zero for deterministic simulation; no synthesis claim is made.
-- The processor harness runs two actual `rv32i_core` instances with ADDI, SW, LW and JAL instructions. It checks cross-core visibility, an incrementing read/modify/write sequence, all 64 register values, memory operations and PC stability while stalled. The original core's PC hold and delayed load writeback were repaired in an attributable commit.
+- The processor harness runs two actual `rv32i_core` instances through request/acceptance bridges with ADDI, SW, LW and JAL instructions. The staged and concurrent programs check cross-core visibility, all 64 register values, exactly-once memory operations, and PC stability while stalled. The original core's PC hold and delayed load writeback were repaired in an attributable commit.
 
 The accepted request is the ordering point. Because only one request can be outstanding, response and memory updates follow that order. Requesters hold payloads until `req_ready`; they consume responses with `rsp_ready`. See [architecture](docs/ARCHITECTURE.md).
 
@@ -23,7 +23,7 @@ $env:MODELSIM_BIN = 'C:\intelFPGA\20.1\modelsim_ase\win32aloem'
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir build/coherent-fresh-1
 ```
 
-Choose a new output directory for each run. The script writes `compile.log`, `simulation.log`, `program.log` and `results.json`, and returns nonzero for a compile error, fatal test, missing result marker, timeout or missing simulator. The subsystem test uses a separate reference memory and checks accepted requests, responses, cached data and ownership. The published `8aaf074` clean-clone milestone passed 71 subsystem scenarios, 1,477 checks and a 128-check two-core program run. See [verification status](docs/VERIFICATION_STATUS.md) for raw evidence and gaps.
+Choose a new output directory for each run. The script writes `compile.log`, `simulation.log`, `program.log`, `concurrent.log` and `results.json`, and returns nonzero for a compile error, fatal test, missing result marker, timeout or missing simulator. The subsystem test uses a separate reference memory and checks accepted requests, responses, cached data and ownership. The earlier `8aaf074` clean-clone milestone passed 71 subsystem scenarios, 1,477 checks and a 128-check staged two-core program run; the corrective evidence is in [verification status](docs/VERIFICATION_STATUS.md).
 
 ## Source and limitations
 

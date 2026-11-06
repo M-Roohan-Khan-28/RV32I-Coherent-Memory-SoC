@@ -13,11 +13,12 @@ module tb_two_core_programs;
   wire [3:0] mask0,mask1;
   wire [1:0] req_ready,rsp_valid,rsp_error,inv_valid;
   wire [63:0] rsp_rdata,inv_addr;
-  wire [1:0] req_valid={req1,req0}, req_write={we1,we0};
-  wire [63:0] req_addr={addr1,addr0},req_wdata={data1,data0};
-  wire [7:0] req_strb={mask1,mask0};
+  wire [1:0] req_valid, req_write;
+  wire [63:0] req_addr,req_wdata;
+  wire [7:0] req_strb;
   logic mem_ready=0;
-  wire [1:0] rsp_ready=2'b11,inv_ack=2'b11;
+  wire [1:0] rsp_ready;
+  wire [1:0] inv_ack=2'b11;
   integer cycles=0,checks=0,accepted=0,completed=0,wait_edges=0;
   integer program_stage=0;
   logic pending=0,pending_owner=0,pending_write=0;
@@ -35,9 +36,20 @@ module tb_two_core_programs;
     .req_write(req_write),.req_addr(req_addr),.req_wdata(req_wdata),.req_strb(req_strb),
     .req_ready(req_ready),.rsp_valid(rsp_valid),.rsp_error(rsp_error),.rsp_rdata(rsp_rdata),
     .rsp_ready(rsp_ready),.mem_ready(mem_ready),.inv_valid(inv_valid),.inv_addr(inv_addr),.inv_ack(inv_ack));
-  assign ack0=rsp_valid[0]; assign ack1=rsp_valid[1];
-  assign err0=rsp_error[0]; assign err1=rsp_error[1];
-  assign read0=rsp_rdata[31:0]; assign read1=rsp_rdata[63:32];
+  core_request_bridge bridge0(.clk(clk),.rst_n(core_reset[0]),
+    .core_req(req0),.core_we(we0),.core_addr(addr0),.core_wdata(data0),.core_wmask(mask0),
+    .core_ack(ack0),.core_err(err0),.core_rdata(read0),
+    .req_valid(req_valid[0]),.req_write(req_write[0]),.req_addr(req_addr[31:0]),
+    .req_wdata(req_wdata[31:0]),.req_strb(req_strb[3:0]),.req_ready(req_ready[0]),
+    .rsp_valid(rsp_valid[0]),.rsp_error(rsp_error[0]),.rsp_rdata(rsp_rdata[31:0]),
+    .rsp_ready(rsp_ready[0]));
+  core_request_bridge bridge1(.clk(clk),.rst_n(core_reset[1]),
+    .core_req(req1),.core_we(we1),.core_addr(addr1),.core_wdata(data1),.core_wmask(mask1),
+    .core_ack(ack1),.core_err(err1),.core_rdata(read1),
+    .req_valid(req_valid[1]),.req_write(req_write[1]),.req_addr(req_addr[63:32]),
+    .req_wdata(req_wdata[63:32]),.req_strb(req_strb[7:4]),.req_ready(req_ready[1]),
+    .rsp_valid(rsp_valid[1]),.rsp_error(rsp_error[1]),.rsp_rdata(rsp_rdata[63:32]),
+    .rsp_ready(rsp_ready[1]));
 
   function automatic [31:0] addi(input [4:0] rd,rs1,input [11:0] imm);
     addi={imm,rs1,3'b000,rd,7'h13};
