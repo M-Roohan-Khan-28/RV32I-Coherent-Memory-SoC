@@ -1,0 +1,10 @@
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+Start time: 05:54:14 on Nov 06,2026
+vlog -sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-fault-2026-11-06\RV32I-Coherent-Memory-SoC\rtl\coherent\coherent_word_memory.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-fault-2026-11-06\RV32I-Coherent-Memory-SoC\tb\tb_coherent_word_memory.sv 
+-- Compiling module coherent_word_memory
+-- Compiling module tb_coherent_word_memory
+
+Top level modules:
+	tb_coherent_word_memory
+End time: 05:54:14 on Nov 06,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0

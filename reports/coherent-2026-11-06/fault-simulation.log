@@ -1,0 +1,16 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_coherent_word_memory -do "run -all; quit -f" 
+# Start time: 05:54:18 on Nov 06,2026
+# Loading sv_std.std
+# Loading work.tb_coherent_word_memory
+# Loading work.coherent_word_memory
+# run -all
+# ** Fatal: data mismatch core=1 addr=00000000 got=eeddccbb expected=11223344
+#    Time: 165 ns  Scope: tb_coherent_word_memory File: C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/stage6-fault-2026-11-06/RV32I-Coherent-Memory-SoC/tb/tb_coherent_word_memory.sv Line: 61
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/stage6-fault-2026-11-06/RV32I-Coherent-Memory-SoC/tb/tb_coherent_word_memory.sv(61)
+#    Time: 165 ns  Iteration: 1  Instance: /tb_coherent_word_memory
+# End time: 05:54:20 on Nov 06,2026, Elapsed time: 0:00:02
+# Errors: 1, Warnings: 0

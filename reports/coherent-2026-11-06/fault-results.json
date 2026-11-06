@@ -1,0 +1,15 @@
+{
+    "status":  "FAIL",
+    "source_revision":  "c228a38cf4aabb6c122df8b465f19c4a32257bdd",
+    "command":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir \u003cfresh-directory\u003e",
+    "simulator":  "Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020",
+    "compile_exit":  0,
+    "simulation_exit":  0,
+    "cases":  0,
+    "checks":  0,
+    "accepted":  0,
+    "completed":  0,
+    "aborted":  0,
+    "output_dir":  "C:\\R_MIGRATION_BACKUP\\Roohan_GitHub_Launch_Kit\\Roohan_GitHub_Launch_Kit\\build\\stage6-fault-2026-11-06\\RV32I-Coherent-Memory-SoC\\build\\intentional-fault",
+    "reason":  "Simulation failed: exit 0"
+}
