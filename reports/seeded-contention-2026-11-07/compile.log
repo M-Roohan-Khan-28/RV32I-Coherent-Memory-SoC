@@ -1,0 +1,16 @@
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+Start time: 00:01:22 on Nov 07,2026
+vlog -sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\rtl\core\alu.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\rtl\core\reg_file.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\rtl\core\control_unit.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\rtl\core\rv32i_core.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\rtl\coherent\coherent_word_memory.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\tb\tb_coherent_word_memory.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\stage6-contention-published-2026-11-06\RV32I-Coherent-Memory-SoC\tb\tb_two_core_programs.sv 
+-- Compiling module alu
+-- Compiling module reg_file
+-- Compiling module control_unit
+-- Compiling module rv32i_core
+-- Compiling module coherent_word_memory
+-- Compiling module tb_coherent_word_memory
+-- Compiling module tb_two_core_programs
+
+Top level modules:
+	tb_coherent_word_memory
+	tb_two_core_programs
+End time: 00:01:23 on Nov 07,2026, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
