@@ -15,7 +15,7 @@ module tb_coherent_word_memory;
   logic [31:0] queued_addr [0:1], queued_data [0:1], queued_expected [0:1];
   logic [3:0] queued_strb [0:1];
   logic queued_write [0:1], queued_error [0:1], outstanding [0:1];
-  integer checks=0, accepted=0, completed=0, cases=0, aborted=0;
+  integer checks=0, accepted=0, completed=0, cases=0, aborted=0, contention_waits=0;
   bit oracle_turn=0;
   integer seed=32'h28a6beef;
   integer cycle=0;
@@ -168,14 +168,14 @@ module tb_coherent_word_memory;
   endtask
 
   task automatic pair(input logic [31:0] a0, a1, input bit w0,w1,
-                      input logic [31:0] d0,d1);
+                      input logic [31:0] d0,d1,input integer stall_cycles);
     integer start_done;
     bit saw0,saw1;
     start_done=completed; saw0=0; saw1=0;
     @(negedge clk);
     req_valid=2'b11; req_write={w1,w0};
     req_addr={a1,a0}; req_wdata={d1,d0}; req_strb=8'hff;
-    mem_ready=1; inv_ack=2'b11;
+    mem_ready=0; inv_ack=2'b11;
     begin : both_loop
       for(integer t=0;t<200;t=t+1) begin
         @(posedge clk);
@@ -184,6 +184,9 @@ module tb_coherent_word_memory;
         @(negedge clk);
         if(saw0) req_valid[0]=0;
         if(saw1) req_valid[1]=0;
+        if(t>=stall_cycles) mem_ready=1;
+        else if(saw0!=saw1 && !mem_ready && req_ready==0)
+          contention_waits=contention_waits+1;
         if(completed==start_done+2) disable both_loop;
       end
       $fatal(1,"simultaneous request timeout");
@@ -225,9 +228,9 @@ module tb_coherent_word_memory;
     one(0,1,32'h10,32'h99887766,4'hf,2,0); // index conflict, clean eviction
     one(0,0,32'h00,0,0,2,0);
     one(1,0,32'h08,0,0,2,0);
-    pair(32'h20,32'h20,1,1,32'h1234abcd,32'h5678ef01);
-    pair(32'h24,32'h28,1,1,32'h87654321,32'h10203040);
-    pair(32'h20,32'h20,0,0,0,0);
+    pair(32'h20,32'h20,1,1,32'h1234abcd,32'h5678ef01,4);
+    pair(32'h24,32'h28,1,1,32'h87654321,32'h10203040,3);
+    pair(32'h20,32'h20,0,0,0,0,2);
     held_response();
     one(1,1,32'h1000_0000,32'h0badcafe,4'hf,2,0);
     one(0,0,32'h1000_0000,0,0,2,0);
@@ -238,12 +241,18 @@ module tb_coherent_word_memory;
       one((seed>>4)&1,(seed>>8)&1,((seed>>12)&15)*4,
           seed^32'h5a5aa5a5,4'hf,1+((seed>>20)&3),-1);
     end
+    for(integer i=0;i<8;i=i+1) begin
+      seed=(seed*1664525)+1013904223;
+      pair(((seed>>7)&15)*4,((seed>>13)&15)*4,(seed>>3)&1,(seed>>4)&1,
+           seed^32'h31415926,seed^32'h27182818,1+((seed>>20)&3));
+    end
     reset_midflight();
     one(1,0,32'h3c,0,0,2,0);
     one(0,0,32'h1000_0000,0,0,2,0);
     if(accepted!=completed+aborted) $fatal(1,"accounting accepted=%0d completed=%0d aborted=%0d",accepted,completed,aborted);
-    if(checks<100 || completed<60 || aborted!=1) $fatal(1,"insufficient checks");
-    $display("PASS COHERENT cases=%0d checks=%0d accepted=%0d completed=%0d aborted=%0d seed=0x28a6beef",cases,checks,accepted,completed,aborted);
+    if(checks<100 || completed<80 || aborted!=1 || contention_waits<10)
+      $fatal(1,"insufficient checks or backpressure contention");
+    $display("PASS COHERENT cases=%0d checks=%0d accepted=%0d completed=%0d aborted=%0d contention_waits=%0d seed=0x28a6beef",cases,checks,accepted,completed,aborted,contention_waits);
     $finish;
   end
 endmodule
