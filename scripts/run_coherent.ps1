@@ -8,7 +8,7 @@ $result = [ordered]@{
   status = 'NOT RUN'; source_revision = (& git -C $repo rev-parse HEAD).Trim()
   command = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir <fresh-directory>'
   simulator = ''; compile_exit = $null; simulation_exit = $null; program_simulation_exit = $null
-  cases = 0; checks = 0; accepted = 0; completed = 0; aborted = 0
+  cases = 0; checks = 0; accepted = 0; completed = 0; aborted = 0; contention_waits = 0
   program_checks = 0; program_accepted = 0; program_completed = 0; program_waits = 0
   output_dir = $destination; reason = ''
 }
@@ -52,10 +52,12 @@ try {
   $result.simulation_exit = Invoke-Logged (Join-Path $simDir 'vsim.exe') '-c -onfinish exit tb_coherent_word_memory -do "run -all; quit -f"' (Join-Path $destination 'simulation.log')
   $sim = Get-Content (Join-Path $destination 'simulation.log') -Raw
   if ($result.simulation_exit -ne 0 -or $sim -match '(?i)\*\* Fatal|\*\* Error' -or $sim -notmatch 'Errors: 0, Warnings: 0') { throw "Simulation failed: exit $($result.simulation_exit)" }
-  if ($sim -notmatch 'PASS COHERENT cases=(\d+) checks=(\d+) accepted=(\d+) completed=(\d+) aborted=(\d+)') { throw 'Required result marker missing' }
+  if ($sim -notmatch 'PASS COHERENT cases=(\d+) checks=(\d+) accepted=(\d+) completed=(\d+) aborted=(\d+) contention_waits=(\d+)') { throw 'Required result marker missing' }
   $result.cases = [int]$Matches[1]; $result.checks = [int]$Matches[2]
   $result.accepted = [int]$Matches[3]; $result.completed = [int]$Matches[4]; $result.aborted = [int]$Matches[5]
-  if ($result.cases -lt 63 -or $result.checks -lt 100 -or $result.aborted -ne 1) { throw 'Required test count missing' }
+  $result.contention_waits = [int]$Matches[6]
+  if ($result.cases -lt 71 -or $result.checks -lt 1400 -or
+      $result.aborted -ne 1 -or $result.contention_waits -lt 10) { throw 'Required test count missing' }
   $programExit = Invoke-Logged (Join-Path $simDir 'vsim.exe') '-c -onfinish exit tb_two_core_programs -do "run -all; quit -f"' (Join-Path $destination 'program.log')
   $result.program_simulation_exit = $programExit
   $program = Get-Content (Join-Path $destination 'program.log') -Raw
