@@ -1,0 +1,20 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_two_core_programs -do "run -all; quit -f" 
+# Start time: 03:23:12 on Nov 07,2026
+# Loading sv_std.std
+# Loading work.tb_two_core_programs
+# Loading work.rv32i_core
+# Loading work.reg_file
+# Loading work.control_unit
+# Loading work.alu
+# Loading work.coherent_word_memory
+# Loading work.core_request_bridge
+# run -all
+# PASS TWO_CORE_PROGRAMS checks=135 accepted=6 completed=6 waits=31
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/corrective-2026-11-07/RV32I-Coherent-Memory-SoC/tb/tb_two_core_programs.sv(158)
+#    Time: 510 ns  Iteration: 1  Instance: /tb_two_core_programs
+# End time: 03:23:12 on Nov 07,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

@@ -1,5 +1,12 @@
 # Verification status
 
+## Corrective request bridge and concurrent cores — 7 November 2026
+
+Clean committed source `421a543bc4261b38f25233439aa30dd6fae2a6c7`
+ran `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir build/corrective-concurrent-committed-2026-11-07` with ModelSim Intel FPGA Starter Edition `vlog 2020.1 Compiler 2020.02 Feb 28 2020`. Compilation had zero errors and warnings; all three simulations and the wrapper exited **0**. The synthetic-requester subsystem remains **71 scenarios, 1,477 checks, 82 accepted, 81 completed, one reset-aborted, 26 contention wait edges**. The preserved staged actual-core program now reports **135 checks, six acceptances/completions, 31 PC wait edges** through the request bridge. A separate simultaneous actual-core program reports **106 checks, two accepted and two completed requests per core, one simultaneous valid window and 26 busy wait edges**. It independently checks each core's write/read sequence, exactly-once accounting, all 64 registers and two final RAM words, with a 1,000-cycle global bound.
+
+The bridge captures the inherited core's one-cycle request and holds its full payload until acceptance. It tracks the later response separately before acknowledging the core. This test does not validate the inherited full AXI/peripheral top or a broad ISA. [Raw compile, subsystem, staged program, concurrent program and JSON evidence](../reports/corrective-2026-11-07/) are retained. The original placeholder bench remains byte-for-byte at blob `e2ec75beb82670a992f54304cbf16a549dc67312`; upstream history and Apache-2.0 remain intact.
+
 ## Current published milestone — 7 November 2026
 
 Merged [PR #4](https://github.com/M-Roohan-Khan-28/RV32I-Coherent-Memory-SoC/pull/4) source `8aaf074b8917480cefe06ee8a15b630116813034` was cloned fresh from the public repository and run with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir build/seeded-contention-clean-clone-2026-11-06`. The output path was chosen on 6 November; the actual simulation completed on 7 November. ModelSim Intel FPGA Starter Edition `vlog 2020.1 Compiler 2020.02 Feb 28 2020` compiled with 0 errors and 0 warnings. Both simulations and the wrapper exited **0**.
