@@ -1,0 +1,20 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_two_core_programs -do "run -all; quit -f" 
+# Start time: 23:40:36 on Nov 06,2026
+# Loading sv_std.std
+# Loading work.tb_two_core_programs
+# Loading work.rv32i_core
+# Loading work.reg_file
+# Loading work.control_unit
+# Loading work.alu
+# Loading work.coherent_word_memory
+# run -all
+# ** Fatal: core0 PC advanced while memory stalled
+#    Time: 80 ns  Scope: tb_two_core_programs File: C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/stage6-core-fault-2026-11-06/RV32I-Coherent-Memory-SoC/tb/tb_two_core_programs.sv Line: 88
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/stage6-core-fault-2026-11-06/RV32I-Coherent-Memory-SoC/tb/tb_two_core_programs.sv(88)
+#    Time: 80 ns  Iteration: 1  Instance: /tb_two_core_programs
+# End time: 23:40:37 on Nov 06,2026, Elapsed time: 0:00:01
+# Errors: 1, Warnings: 0

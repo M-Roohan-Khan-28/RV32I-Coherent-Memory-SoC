@@ -1,0 +1,20 @@
+{
+    "status":  "PASS",
+    "source_revision":  "2ca9a5ec34ffffdbf0bf2922a5592751319634f3",
+    "command":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir \u003cfresh-directory\u003e",
+    "simulator":  "Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020",
+    "compile_exit":  0,
+    "simulation_exit":  0,
+    "program_simulation_exit":  0,
+    "cases":  63,
+    "checks":  1254,
+    "accepted":  66,
+    "completed":  65,
+    "aborted":  1,
+    "program_checks":  128,
+    "program_accepted":  6,
+    "program_completed":  6,
+    "program_waits":  24,
+    "output_dir":  "C:\\R_MIGRATION_BACKUP\\Roohan_GitHub_Launch_Kit\\Roohan_GitHub_Launch_Kit\\build\\stage6-program-published-2026-11-06\\RV32I-Coherent-Memory-SoC\\build\\two-core-clean-clone-2026-11-06",
+    "reason":  ""
+}

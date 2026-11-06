@@ -1,0 +1,15 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_coherent_word_memory -do "run -all; quit -f" 
+# Start time: 23:44:26 on Nov 06,2026
+# Loading sv_std.std
+# Loading work.tb_coherent_word_memory
+# Loading work.coherent_word_memory
+# run -all
+# PASS COHERENT cases=63 checks=1254 accepted=66 completed=65 aborted=1 seed=0x28a6beef
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/stage6-program-published-2026-11-06/RV32I-Coherent-Memory-SoC/tb/tb_coherent_word_memory.sv(247)
+#    Time: 4150 ns  Iteration: 1  Instance: /tb_coherent_word_memory
+# End time: 23:44:26 on Nov 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
