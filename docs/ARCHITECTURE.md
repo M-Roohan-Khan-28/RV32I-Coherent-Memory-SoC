@@ -12,4 +12,10 @@ The cache states are `I` (invalid), `S` (shared clean) and `E` (clean exclusive-
 
 Reset clears arbitration, pending response, cache entries and doorbell. RAM persists. An outstanding request is cancelled; if reset arrives after an accepted invalidation but before the memory write, the other cache may have been invalidated, while RAM retains its previous value. The test covers reset during a stalled write before invalidation or RAM update.
 
-This is a behavioral simulation milestone. It is not an AXI adapter, production SRAM macro, write-back coherence protocol or complete processor system.
+## Processor program harness
+
+`tb/tb_two_core_programs.sv` connects two inherited `rv32i_core` instances directly to the two requester lanes, with private instruction arrays and a deterministic delayed `mem_ready`. Core 0 first stores 42, then loads 42. Core 1 is released after that handshake and loads 42, increments it to 43, stores it, and loads 43. The test then changes core 0's terminal loop instruction into one final load, which must read 43. The instruction words use ADDI, SW, LW and JAL; no other ISA behavior is claimed. The core's PC now holds while its accepted memory request waits, and load writeback occurs on the response handshake.
+
+The program test checks all 32 registers of each core, the final shared RAM word, six accepted/completed memory operations, read data against a separate software word model, response ownership, and PC stability during observed wait cycles. The stages control when core 1 begins; they do not assert a general simultaneous-processor scheduling claim. The separate request-generator test covers simultaneous same-address requests and arbitration.
+
+This is a behavioral simulation milestone. It is not an AXI adapter, production SRAM macro, write-back coherence protocol or verified integration of the inherited full processor/peripheral top.
