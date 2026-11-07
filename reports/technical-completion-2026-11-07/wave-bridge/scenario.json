@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "origin": "simulator",
+  "source_filename": "scenario.vcd",
+  "source_sha256": "3e3d948057d2fb0a9c8df753691b70a28e01ce113b68a969f921b5019c30102b",
+  "timescale": "1ps",
+  "start_tick": 0,
+  "end_tick": 480000,
+  "source_final_tick": 480000,
+  "signals": [
+    {
+      "name": "tb_core_request_bridge.clk",
+      "code": "!",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.rst_n",
+      "code": "\"",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.core_req",
+      "code": "#",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.core_we",
+      "code": "$",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.req_valid",
+      "code": "%",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.req_ready",
+      "code": "&",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.rsp_valid",
+      "code": "'",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.rsp_ready",
+      "code": "(",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.core_ack",
+      "code": ")",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_core_request_bridge.core_err",
+      "code": "*",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    }
+  ],
+  "same_tick_collapses": 0,
+  "functional_result": "NOT_ASSESSED_BY_RENDERER"
+}

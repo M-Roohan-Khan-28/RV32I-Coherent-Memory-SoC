@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "origin": "simulator",
+  "source_filename": "scenario.vcd",
+  "source_sha256": "3b145e4053d95668578098cd9fb44a4fde2f3008aad04fe40fc8dd2a42e8db94",
+  "timescale": "1ps",
+  "start_tick": 0,
+  "end_tick": 790000,
+  "source_final_tick": 790000,
+  "signals": [
+    {
+      "name": "tb_coherent_reset_commit.clk",
+      "code": "!",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.rst_n",
+      "code": "\"",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.mem_ready",
+      "code": "#",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.req_valid",
+      "code": "$",
+      "width": 2,
+      "kind": "reg",
+      "bit_range": "[1:0]"
+    },
+    {
+      "name": "tb_coherent_reset_commit.req_ready[1]",
+      "code": "%",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.req_ready[0]",
+      "code": "&",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.rsp_valid[1]",
+      "code": "'",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.rsp_valid[0]",
+      "code": "(",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.rsp_ready",
+      "code": ")",
+      "width": 2,
+      "kind": "reg",
+      "bit_range": "[1:0]"
+    },
+    {
+      "name": "tb_coherent_reset_commit.inv_valid[1]",
+      "code": "*",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_coherent_reset_commit.inv_valid[0]",
+      "code": "+",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    }
+  ],
+  "same_tick_collapses": 0,
+  "functional_result": "NOT_ASSESSED_BY_RENDERER"
+}

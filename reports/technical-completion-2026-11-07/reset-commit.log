@@ -1,0 +1,15 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_coherent_reset_commit -do "run -all; quit -f" 
+# Start time: 22:22:11 on Nov 07,2026
+# Loading sv_std.std
+# Loading work.tb_coherent_reset_commit
+# Loading work.coherent_word_memory
+# run -all
+# RESET_COMMIT_PASS checks=163 accepted=8 completed=5 aborted=3 commits=3 resets=5
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/tc/coherent/tb/tb_coherent_reset_commit.sv(147)
+#    Time: 790 ns  Iteration: 1  Instance: /tb_coherent_reset_commit
+# End time: 22:22:11 on Nov 07,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

@@ -14,6 +14,17 @@ This repository preserves the [Talib reference project](https://github.com/sha1k
 
 The accepted request is the ordering point. Because only one request can be outstanding, response and memory updates follow that order. Requesters hold payloads until `req_ready`; they consume responses with `rsp_ready`. See [architecture](docs/ARCHITECTURE.md).
 
+At tested source `d850c9af48aaa911dc406425a889d09cccec1de6`, seven
+bounded simulations passed: the preserved 71-scenario subsystem, 135-check
+staged program and 106-check different-address concurrent program, plus a
+159-check bridge contract, 163-check reset/commit contract, and two
+106-check actual-core shared-address programs. The new programs distinguish
+acceptance order from completion and require busy contention and held
+invalidation. A bypassed bridge and inverted RAM write were detected with
+nonzero wrapper exits. See [new raw results and measured traces](reports/technical-completion-2026-11-07/)
+and [verification status](docs/VERIFICATION_STATUS.md). These are bounded
+local branch results, pending a new published locked aggregate.
+
 ## Reproduce
 
 On Windows with ModelSim Intel FPGA Starter Edition 2020.1:
@@ -23,8 +34,21 @@ $env:MODELSIM_BIN = 'C:\intelFPGA\20.1\modelsim_ase\win32aloem'
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir build/coherent-fresh-1
 ```
 
-Choose a new output directory for each run. The script writes `compile.log`, `simulation.log`, `program.log`, `concurrent.log` and `results.json`, and returns nonzero for a compile error, fatal test, missing result marker, timeout or missing simulator. The subsystem test uses a separate reference memory and checks accepted requests, responses, cached data and ownership. The earlier `8aaf074` clean-clone milestone passed 71 subsystem scenarios, 1,477 checks and a 128-check staged two-core program run; the corrective evidence is in [verification status](docs/VERIFICATION_STATUS.md).
+Choose a new output directory for each run. The script writes seven raw
+simulation logs, `compile.log`, `version.log` and `results.json`, and returns
+nonzero for a compile error, fatal test, missing result marker, timeout or
+missing simulator. The subsystem and new reset/commit tests use separate
+reference memory models. The earlier `8aaf074` clean-clone milestone passed
+71 subsystem scenarios, 1,477 checks and a 128-check staged two-core program
+run; its evidence remains historical in [verification status](docs/VERIFICATION_STATUS.md).
 
 ## Source and limitations
 
-The original RTL, UVM source, physical-design files and reports remain in Git ancestry. The unchanged original directed bench is retained at `tb/legacy/tb_directed_final.sv`; its unconditional passing placeholders and ModelSim compile errors are excluded from the verified milestone. The new tests do not establish full AXI SoC behavior, the full RV32I ISA, AXI protocol compliance, timing closure, synthesis or hardware operation. See [provenance](docs/PROVENANCE.md) and the repository [LICENSE](LICENSE).
+The original RTL, UVM source, physical-design files and reports remain in
+Git ancestry. The unchanged original directed bench is retained at
+`tb/legacy/tb_directed_final.sv`; its unconditional passing placeholders and
+ModelSim compile errors are excluded from the verified milestone. The new
+tests do not establish full AXI SoC behavior, the full RV32I ISA, AXI
+protocol compliance, coverage closure, timing closure, synthesis or hardware
+operation. See the [ISA evidence boundary](docs/ISA_SUPPORT.md),
+[provenance](docs/PROVENANCE.md) and repository [LICENSE](LICENSE).

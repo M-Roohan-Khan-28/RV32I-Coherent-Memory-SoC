@@ -1,0 +1,7 @@
+{
+    "source_revision":  "d850c9af48aaa911dc406425a889d09cccec1de6",
+    "fault":  "bridge",
+    "mutant_sha256":  "0DDEF1C6EA06C90E9C4BE9B72EA85FB0710294DC27B16E87B355127709D6322A",
+    "wrapper_exit_code":  1,
+    "fatal":  "# ** Fatal: BRIDGE_HOLD_MISMATCH"
+}

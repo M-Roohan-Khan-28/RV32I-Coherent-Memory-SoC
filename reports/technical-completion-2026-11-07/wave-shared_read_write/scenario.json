@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "origin": "simulator",
+  "source_filename": "scenario.vcd",
+  "source_sha256": "974ecaa6248769450d0470656c5dab64272136ecd05af88fe955cf2d2b6af3f6",
+  "timescale": "1ps",
+  "start_tick": 0,
+  "end_tick": 580000,
+  "source_final_tick": 580000,
+  "signals": [
+    {
+      "name": "tb_two_core_shared.clk",
+      "code": "!",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.reset_n",
+      "code": "\"",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.mem_ready",
+      "code": "#",
+      "width": 1,
+      "kind": "reg",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.core_req[1]",
+      "code": "$",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.core_req[0]",
+      "code": "%",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.req_valid[1]",
+      "code": "&",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.req_valid[0]",
+      "code": "'",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.req_ready[1]",
+      "code": "(",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.req_ready[0]",
+      "code": ")",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.rsp_valid[1]",
+      "code": "*",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.rsp_valid[0]",
+      "code": "+",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.rsp_ready[1]",
+      "code": ",",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.rsp_ready[0]",
+      "code": "-",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.core_ack[1]",
+      "code": ".",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.core_ack[0]",
+      "code": "/",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.inv_valid[1]",
+      "code": "0",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.inv_valid[0]",
+      "code": "1",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.inv_ack[1]",
+      "code": "2",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    },
+    {
+      "name": "tb_two_core_shared.inv_ack[0]",
+      "code": "3",
+      "width": 1,
+      "kind": "wire",
+      "bit_range": ""
+    }
+  ],
+  "same_tick_collapses": 3,
+  "functional_result": "NOT_ASSESSED_BY_RENDERER"
+}

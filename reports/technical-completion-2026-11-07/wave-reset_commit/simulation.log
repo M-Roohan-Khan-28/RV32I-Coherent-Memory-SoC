@@ -1,0 +1,24 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_coherent_reset_commit -do "vcd file scenario.vcd; vcd add /tb_coherent_reset_commit/clk; vcd add /tb_coherent_reset_commit/rst_n; vcd add /tb_coherent_reset_commit/mem_ready; vcd add /tb_coherent_reset_commit/req_valid; vcd add /tb_coherent_reset_commit/req_ready; vcd add /tb_coherent_reset_commit/rsp_valid; vcd add /tb_coherent_reset_commit/rsp_ready; vcd add /tb_coherent_reset_commit/inv_valid; run -all; quit -code 0" 
+# Start time: 22:22:20 on Nov 07,2026
+# Loading sv_std.std
+# Loading work.tb_coherent_reset_commit
+# Loading work.coherent_word_memory
+# vcd file scenario.vcd
+#  vcd add /tb_coherent_reset_commit/clk
+#  vcd add /tb_coherent_reset_commit/rst_n
+#  vcd add /tb_coherent_reset_commit/mem_ready
+#  vcd add /tb_coherent_reset_commit/req_valid
+#  vcd add /tb_coherent_reset_commit/req_ready
+#  vcd add /tb_coherent_reset_commit/rsp_valid
+#  vcd add /tb_coherent_reset_commit/rsp_ready
+#  vcd add /tb_coherent_reset_commit/inv_valid
+#  run -all
+# RESET_COMMIT_PASS checks=163 accepted=8 completed=5 aborted=3 commits=3 resets=5
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/tc/coherent/tb/tb_coherent_reset_commit.sv(147)
+#    Time: 790 ns  Iteration: 1  Instance: /tb_coherent_reset_commit
+# End time: 22:22:21 on Nov 07,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

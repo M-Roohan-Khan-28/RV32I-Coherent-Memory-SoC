@@ -10,12 +10,33 @@ RAM occupies aligned addresses `0x0000_0000` through `0x0000_0ffc` (1024 words).
 
 The cache states are `I` (invalid), `S` (shared clean) and `E` (clean exclusive-owner). `E` is **not dirty**: every accepted write updates RAM before its response. A write to an address present in the other cache holds an invalidation request until `inv_ack`; only then does it update RAM and its own cache. A miss that reads a word owned in `E` by the other cache changes that line to `S` and fills the requesting cache in `S`. A read hit returns its own line. A conflicting tag replaces a line without a writeback. No snoop race occurs because the request engine is serialized.
 
-Reset clears arbitration, pending response, cache entries and doorbell. RAM persists. An outstanding request is cancelled; if reset arrives after an accepted invalidation but before the memory write, the other cache may have been invalidated, while RAM retains its previous value. The test covers reset during a stalled write before invalidation or RAM update.
+Reset clears arbitration, pending response, cache entries and doorbell. RAM persists. An outstanding request is cancelled; if reset arrives after an accepted invalidation but before the memory write, the other cache may have been invalidated, while RAM retains its previous value. If `mem_ready` has already committed a write in `WAIT_MEM`, reset cancels the response but does **not** roll back that RAM write. Acceptance, side-effect commitment, response availability and response consumption are four distinct events. Shared reset of both bridges, cores and memory is the tested baseline; independently resetting a bridge with a memory transaction in flight has no defined cancellation/drain contract here.
+
+The new `tb/tb_coherent_reset_commit.sv` uses accepted external requests and
+the controlled `mem_ready` edge to update an independent word/doorbell model.
+It checks reset before commit, after a committed RAM or doorbell write with
+response held, and after response consumption. Its accounting requires
+accepted = completed + reset-aborted + outstanding. The earlier synthetic
+scoreboard still updates its own oracle on successful responses and its
+existing reset case occurs before RAM commitment; its earlier count remains
+historical rather than a substitute for the new commit-timing test.
 
 ## Processor program harness
 
 `tb/tb_two_core_programs.sv` connects two inherited `rv32i_core` instances through separate `core_request_bridge` instances to the requester lanes, with private instruction arrays and a deterministic delayed `mem_ready`. The inherited core emits a one-cycle request while entering its stall state. The bridge captures address, data, strobe and direction, holds them until `req_valid && req_ready`, then tracks the distinct response handshake before asserting the core acknowledge. Core 0 first stores 42, then loads 42. Core 1 is released after that handshake and loads 42, increments it to 43, stores it, and loads 43. The test then changes core 0's terminal loop instruction into one final load, which must read 43. The instruction words use ADDI, SW, LW and JAL; no other ISA behavior is claimed. The core's PC holds while its memory request waits, and load writeback occurs on the response handshake.
 
 The staged program test checks all 32 registers of each core, the final shared RAM word, six accepted/completed memory operations, read data against a separate software word model, response ownership, and PC stability during observed wait cycles. A second actual-core program starts both processors together; each stores and loads a different word. It requires exactly two acceptances and completions per core, both requesters valid together, observed busy wait edges, correct final RAM/registers and bounded progress. The separate synthetic request-generator test remains and covers simultaneous same-address requests, eight seeded simultaneous pairs and arbitration while memory is not ready. The pending lane remains valid until it receives a round-robin grant; the scoreboard follows the observed acceptance order.
+
+Two further actual-core programs in `tb/tb_two_core_shared.sv` target the
+same word. Store/store followed by loads and read/write overlap each use
+the observed global acceptance order to update an independent word model
+and to predict every load result. They require simultaneous valid requests,
+busy queued requests, held invalidation, exactly two acceptances and
+completions per core, all register values and bounded progress. The bridge
+unit test separately demonstrates one-cycle pulse capture, full payload
+hold, acceptance without core acknowledgement, later response completion,
+spurious-response rejection and shared reset while pending/in flight. The
+core-side interface assumes no new `core_req` while its bridge is occupied;
+the actual-core tests assert that condition.
 
 This is a behavioral simulation milestone. It is not an AXI adapter, production SRAM macro, write-back coherence protocol or verified integration of the inherited full processor/peripheral top.

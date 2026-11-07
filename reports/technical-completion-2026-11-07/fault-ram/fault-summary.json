@@ -1,0 +1,7 @@
+{
+    "source_revision":  "d850c9af48aaa911dc406425a889d09cccec1de6",
+    "fault":  "ram",
+    "mutant_sha256":  "6D364F89FB3EAB79BA509455CC78C46CBA728CF8F6A1B44BAAA6F8CD9CF4D378",
+    "wrapper_exit_code":  1,
+    "fatal":  "# ** Fatal: RESET_COMMIT_RESET_STATE_MISMATCH"
+}

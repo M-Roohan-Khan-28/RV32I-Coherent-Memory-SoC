@@ -1,0 +1,15 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_core_request_bridge -do "run -all; quit -f" 
+# Start time: 22:22:10 on Nov 07,2026
+# Loading sv_std.std
+# Loading work.tb_core_request_bridge
+# Loading work.core_request_bridge
+# run -all
+# BRIDGE_CONTRACT_PASS checks=159 accepted=4 completed=3 aborted=1 stalls=14
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/tc/coherent/tb/tb_core_request_bridge.sv(137)
+#    Time: 480 ns  Iteration: 1  Instance: /tb_core_request_bridge
+# End time: 22:22:10 on Nov 07,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
