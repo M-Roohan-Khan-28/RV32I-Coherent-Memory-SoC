@@ -1,0 +1,16 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_core_request_bridge -do "run -all; quit -code 0" 
+# Start time: 22:22:54 on Nov 07,2026
+# Loading sv_std.std
+# Loading work.tb_core_request_bridge
+# Loading work.core_request_bridge
+# run -all
+# ** Fatal: BRIDGE_HOLD_MISMATCH
+#    Time: 55 ns  Scope: tb_core_request_bridge File: C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/tc/coherent/tb/tb_core_request_bridge.sv Line: 30
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/tc/coherent/tb/tb_core_request_bridge.sv(30)
+#    Time: 55 ns  Iteration: 1  Instance: /tb_core_request_bridge
+# End time: 22:22:54 on Nov 07,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0

@@ -1,0 +1,19 @@
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+Start time: 22:22:55 on Nov 07,2026
+vlog -sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\rtl\core\alu.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\rtl\core\reg_file.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\rtl\core\control_unit.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\rtl\core\rv32i_core.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\test-runs\tc-coherent-ram-invert-fault.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\rtl\coherent\core_request_bridge.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\tb\tb_core_request_bridge.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\tb\tb_coherent_reset_commit.sv C:\R_MIGRATION_BACKUP\Roohan_GitHub_Launch_Kit\Roohan_GitHub_Launch_Kit\build\tc\coherent\tb\tb_two_core_shared.sv 
+-- Compiling module alu
+-- Compiling module reg_file
+-- Compiling module control_unit
+-- Compiling module rv32i_core
+-- Compiling module coherent_word_memory
+-- Compiling module core_request_bridge
+-- Compiling module tb_core_request_bridge
+-- Compiling module tb_coherent_reset_commit
+-- Compiling module tb_two_core_shared
+
+Top level modules:
+	tb_core_request_bridge
+	tb_coherent_reset_commit
+	tb_two_core_shared
+End time: 22:22:55 on Nov 07,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0

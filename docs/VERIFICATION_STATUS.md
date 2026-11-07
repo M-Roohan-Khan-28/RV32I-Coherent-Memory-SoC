@@ -1,5 +1,58 @@
 # Verification status
 
+## Bridge, shared address and reset-commit qualification — 7 November 2026
+
+Tested source/runner commit `d850c9af48aaa911dc406425a889d09cccec1de6`
+was clean. ModelSim Intel FPGA Starter Edition `vsim 2020.1 Simulator
+2020.02 Feb 28 2020` compiled with zero errors/warnings. The full
+`scripts/run_coherent.ps1` wrapper and all **seven** required simulations
+exited **0**; [raw logs and JSON](../reports/technical-completion-2026-11-07/)
+record the tool banner, commands, counts and fresh output. Each command has
+a 120-second external timeout; benches have independent simulation bounds.
+
+| Simulation | Actual result |
+| --- | --- |
+| Preserved synthetic subsystem | 71 scenarios, 1,477 checks, 82 accepted, 81 completed, one reset-aborted |
+| Preserved staged actual-core program | 135 checks, six acceptances/completions |
+| Preserved different-address concurrent actual cores | 106 checks, two accepted/completed per core |
+| New one-cycle core request bridge | 159 checks, four accepted, three completed, one reset-aborted, 14 stall edges |
+| New reset/commit contract | 163 checks, eight accepted, five completed, three reset-aborted, three writes committed |
+| New same-word store/store then loads | 106 checks, two accepted/completed per core, simultaneous and busy overlap, two invalidation wait edges |
+| New same-word read/write overlap | 106 checks, two accepted/completed per core, simultaneous and busy overlap, two invalidation wait edges |
+
+The reset test uses externally accepted requests and controlled `mem_ready`
+edges to update an independent RAM/doorbell model. It demonstrates that a
+write committed before reset survives even if its response is aborted;
+a write reset before commit has no effect; the doorbell clears; and a
+completed partial write survives reset. The two shared programs derive
+load results and final memory from observed global acceptance order, then
+compare each core's registers and bounded progress. These checks do not
+retroactively change the older 71-scenario synthetic oracle's commit model.
+
+Four selected passing runs captured actual VCDs and
+[VCD-derived SVGs](../reports/technical-completion-2026-11-07/) for bridge,
+reset/commit, same-word store/store and read/write overlap. Each adjacent
+metadata JSON records top, tick unit, signal map and raw VCD hash. The
+renderer is not a functional checker. Two disposable controls each returned
+wrapper exit **1**: bypassing the bridge produced `BRIDGE_HOLD_MISMATCH`,
+and inverting a RAM write produced `RESET_COMMIT_RESET_STATE_MISMATCH`.
+Their mutant sources, hashes, raw logs and JSON are preserved separately;
+neither is in the tested branch.
+
+Reproduce from this source with a fresh output directory:
+
+```powershell
+$env:MODELSIM_BIN = 'C:\intelFPGA\20.1\modelsim_ase\win32aloem'
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run_coherent.ps1 -OutputDir C:\short\coherent-run-unique
+if ($LASTEXITCODE -ne 0) { throw 'Coherent regression failed or blocked' }
+```
+
+The original inherited UVM and full AXI/peripheral top remain unexecuted;
+class randomization, covergroups and SVA did not qualify in the installed
+Starter edition. This is no claim of complete RV32I ISA, full coherence
+protocol, code/functional coverage closure, synthesis, timing, FPGA or
+hardware behavior. See [ISA_SUPPORT.md](ISA_SUPPORT.md).
+
 ## Corrective request bridge and concurrent cores — 7 November 2026
 
 Clean committed source `421a543bc4261b38f25233439aa30dd6fae2a6c7`

@@ -1,0 +1,32 @@
+Reading pref.tcl
+
+# 2020.1
+
+# vsim -c -onfinish exit tb_two_core_shared -do "vcd file scenario.vcd; vcd add /tb_two_core_shared/clk; vcd add /tb_two_core_shared/reset_n; vcd add /tb_two_core_shared/mem_ready; vcd add /tb_two_core_shared/core_req; vcd add /tb_two_core_shared/req_valid; vcd add /tb_two_core_shared/req_ready; vcd add /tb_two_core_shared/rsp_valid; vcd add /tb_two_core_shared/rsp_ready; vcd add /tb_two_core_shared/core_ack; vcd add /tb_two_core_shared/inv_valid; vcd add /tb_two_core_shared/inv_ack; run -all; quit -code 0" 
+# Start time: 22:22:23 on Nov 07,2026
+# Loading sv_std.std
+# Loading work.tb_two_core_shared
+# Loading work.rv32i_core
+# Loading work.reg_file
+# Loading work.control_unit
+# Loading work.alu
+# Loading work.coherent_word_memory
+# Loading work.core_request_bridge
+# vcd file scenario.vcd
+#  vcd add /tb_two_core_shared/clk
+#  vcd add /tb_two_core_shared/reset_n
+#  vcd add /tb_two_core_shared/mem_ready
+#  vcd add /tb_two_core_shared/core_req
+#  vcd add /tb_two_core_shared/req_valid
+#  vcd add /tb_two_core_shared/req_ready
+#  vcd add /tb_two_core_shared/rsp_valid
+#  vcd add /tb_two_core_shared/rsp_ready
+#  vcd add /tb_two_core_shared/core_ack
+#  vcd add /tb_two_core_shared/inv_valid
+#  vcd add /tb_two_core_shared/inv_ack
+#  run -all
+# PASS TWO_CORE_SHARED mode=store_store checks=106 accepted=2/2 completed=2/2 simultaneous=1 busy_waits=26 invalidation_waits=2 final=29 load0=29 load1=29
+# ** Note: $finish    : C:/R_MIGRATION_BACKUP/Roohan_GitHub_Launch_Kit/Roohan_GitHub_Launch_Kit/build/tc/coherent/tb/tb_two_core_shared.sv(167)
+#    Time: 580 ns  Iteration: 1  Instance: /tb_two_core_shared
+# End time: 22:22:24 on Nov 07,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
